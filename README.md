@@ -18,8 +18,6 @@ While most Data Scientists implement Support Vector Machines (SVMs) via a single
 
 This repository contains my complete, end-to-end mathematical derivation of SVMs. It decodes the "magic" behind the algorithm, proving how we transition from a simple geometric hyperplane objective to a complex dual optimization problem using **Lagrange Multipliers** and **Slack Variables**.
 
-📄 **[Click here to read the full PDF Derivation](link_to_your_pdf_here.pdf)**
-
 ---
 
 ## 🧮 Core Mathematical Highlights
@@ -28,32 +26,53 @@ This repository contains my complete, end-to-end mathematical derivation of SVMs
 The objective of an SVM is to find a hyperplane that correctly classifies data points while maximizing the distance (margin) between the closest data points (Support Vectors) and the boundary.
 
 The equation of our n-dimensional hyperplane is given by:
-$$ \mathbf{w} \cdot \mathbf{x} + b = 0 $$
+
+```math
+\mathbf{w} \cdot \mathbf{x} + b = 0
+```
 
 Where $\mathbf{w}$ is the weight vector (perpendicular to the hyperplane) and $b$ is the bias. The total margin distance between the positive ($H_1$) and negative ($H_{-1}$) hyperplanes is $\frac{2}{\|\mathbf{w}\|}$. 
 
 To maximize the margin, we must minimize $\|\mathbf{w}\|$. For mathematical convenience, we minimize:
-$$ f(\mathbf{w}) = \frac{1}{2} \|\mathbf{w}\|^2 $$
+
+```math
+f(\mathbf{w}) = \frac{1}{2} \|\mathbf{w}\|^2
+```
 
 ### 2. Handling Real-World Data (Soft-Margin)
 Real-world datasets are messy and rarely linearly separable. To accommodate outliers, we introduce **Slack Variables ($\xi_i$)** to penalize misclassified points.
 
 Our new objective function becomes:
-$$ \min_{\mathbf{w}, b, \xi} \left( \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^{m} \xi_i \right) $$
+
+```math
+\min_{\mathbf{w}, b, \xi} \left( \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^{m} \xi_i \right)
+```
 
 Subject to the constraints:
-$$ y_i (\mathbf{w} \cdot \mathbf{x}_i + b) \geq 1 - \xi_i $$
-$$ \xi_i \geq 0 $$
+
+```math
+y_i (\mathbf{w} \cdot \mathbf{x}_i + b) \geq 1 - \xi_i
+```
+```math
+\xi_i \geq 0
+```
 
 ### 3. The Lagrangian Formulation
 To solve this constrained inequality optimization problem, we utilize the **Lagrange Multiplier Method**. The primal Lagrangian $\mathcal{L}$ is formulated as:
 
-$$ \mathcal{L}(\mathbf{w}, b, \xi, \alpha, \mu) = \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^{m} \xi_i - \sum_{i=1}^{m} \alpha_i \left[ y_i (\mathbf{w} \cdot \mathbf{x}_i + b) - 1 + \xi_i \right] - \sum_{i=1}^{m} \mu_i \xi_i $$
+```math
+\mathcal{L}(\mathbf{w}, b, \xi, \alpha, \mu) = \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^{m} \xi_i - \sum_{i=1}^{m} \alpha_i \left[ y_i (\mathbf{w} \cdot \mathbf{x}_i + b) - 1 + \xi_i \right] - \sum_{i=1}^{m} \mu_i \xi_i
+```
 
 ### 4. Dual Optimization 
 By differentiating $\mathcal{L}$ with respect to $\mathbf{w}$, $b$, and $\xi$, and equating to zero, we derive the critical constraints:
-$$ \mathbf{w} = \sum_{i=1}^{m} \alpha_i y_i \mathbf{x}_i $$
-$$ \sum_{i=1}^{m} \alpha_i y_i = 0 $$
+
+```math
+\mathbf{w} = \sum_{i=1}^{m} \alpha_i y_i \mathbf{x}_i
+```
+```math
+\sum_{i=1}^{m} \alpha_i y_i = 0
+```
 
 By substituting these back into the Lagrangian, the optimizer solves the **Dual Problem** to find the optimal multipliers $\alpha_i$. Once found, the optimal hyperplane is perfectly constructed.
 
